@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainList">
+
+    <fragment
+        android:id="@+id/mainList"
+        android:name="com.training.itemcreator.fragments.MainList"
+        android:label="MainList" >
+        <action
+            android:id="@+id/action_mainList_to_detailPage"
+            app:destination="@id/detailPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailPage"
+        android:name="com.training.itemcreator.fragments.DetailPage"
+        android:label="fragment_detail_page"
+        tools:layout="@layout/fragment_detail_page" />
+</navigation>

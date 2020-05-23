@@ -1,4 +1,4 @@
-package com.training.itemcreator
+package com.training.itemcreator.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -6,12 +6,13 @@ import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
+import com.training.itemcreator.R
 import com.training.itemcreator.adapters.MainAdapter
 
 class MainList : Fragment() {
@@ -21,10 +22,8 @@ class MainList : Fragment() {
     var inputText : TextInputEditText? = null
     var button : Button? = null
 
-    private val onClickItem = { v: View, position: Int -> Toast.makeText(
-            v.context,
-            String.format(getString(R.string.row_text), adapter?.getItem(position)),
-            Toast.LENGTH_SHORT).show()
+    private val onClickItem = { v: View, position: Int ->
+        v.findNavController().navigate(R.id.action_mainList_to_detailPage)
     }
 
     private val onAddItem = { _: View ->
