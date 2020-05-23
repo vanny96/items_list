@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ItemCreator</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="row_text">I\'m the row called %s!</string>
+    <string name="add_button">Add row</string>
+    <string name="hint_value">Insert row value</string>
+</resources>
