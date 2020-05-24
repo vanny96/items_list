@@ -7,21 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.textfield.TextInputEditText
 import com.training.itemcreator.R
 import com.training.itemcreator.model.Todo
 import com.training.itemcreator.repository.TodoRepository
 import com.training.itemcreator.util.hideKeyboard
+import com.training.itemcreator.viewmodel.TodoDetailViewModel
+import com.training.itemcreator.viewmodel.TodoListViewModel
+import com.training.itemcreator.viewmodel.factory.TodoViewModelFactory
 
 class DetailPage : Fragment() {
 
-    private lateinit var repository : TodoRepository
+    private lateinit var todoDetailViewModel: TodoDetailViewModel
 
-    private val todo: Todo by lazy {
-        val args: DetailPageArgs by navArgs()
-        repository.getItem(args.itemId)
-    }
+    private val args: DetailPageArgs by navArgs()
 
     lateinit var nameField: TextInputEditText
     lateinit var descriptionField: TextInputEditText
@@ -33,14 +36,11 @@ class DetailPage : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_detail_page, container, false)
 
-        repository = TodoRepository(view.context)
+        initViewModel(view)
 
         nameField = view.findViewById(R.id.name_field)
         descriptionField = view.findViewById(R.id.description_field)
         updateButton = view.findViewById(R.id.update_button)
-
-        nameField.setText(todo.name)
-        descriptionField.setText(todo.description)
 
         nameField.onFocusChangeListener = onFocusChange
         descriptionField.onFocusChangeListener = onFocusChange
@@ -49,10 +49,20 @@ class DetailPage : Fragment() {
         return view
     }
 
-    private val onUpdateClick = View.OnClickListener { v: View ->
+    private fun initViewModel(view: View) {
+        todoDetailViewModel = ViewModelProvider(this, TodoViewModelFactory(view.context, args.itemId))
+            .get(TodoDetailViewModel::class.java)
 
-        val updatedTodo = Todo(todo.id, nameField.text.toString(), descriptionField.text.toString())
-        repository.update(updatedTodo)
+        todoDetailViewModel.getTodo().observe(viewLifecycleOwner, Observer {
+            nameField.setText(it.name)
+            descriptionField.setText(it.description)
+        })
+    }
+
+    private val onUpdateClick = View.OnClickListener { v: View ->
+        todoDetailViewModel.update(
+            Todo(args.itemId, nameField.text.toString(), descriptionField.text.toString())
+        )
         Toast.makeText(v.context, getText(R.string.todo_updated_toast), Toast.LENGTH_SHORT).show()
     }
 

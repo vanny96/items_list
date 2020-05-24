@@ -10,8 +10,8 @@ import com.training.itemcreator.R
 import com.training.itemcreator.model.Todo
 
 class MainAdapter(
-    private val context: Context,
-    private var data: List<Todo>,
+    context: Context,
+    var data: List<Todo>,
     private val clickListener: (v: View, todo: Todo) -> Unit
 ) : RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
 
@@ -44,12 +44,7 @@ class MainAdapter(
     }
 
     // Utility
-    fun refreshContext(data: List<Todo>){
-        this.data = data
-        notifyDataSetChanged()
-    }
-
     fun getLastItem() : Int{
-        if(data.isEmpty()) return 0 else return data.size - 1
+        return if(data.isEmpty()) 0 else data.size - 1
     }
 }

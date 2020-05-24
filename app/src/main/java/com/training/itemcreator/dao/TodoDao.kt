@@ -1,5 +1,6 @@
 package com.training.itemcreator.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -13,10 +14,10 @@ interface TodoDao {
     fun add(todo: Todo)
 
     @Query("SELECT * FROM Todo")
-    fun getList(): List<Todo>
+    fun getList(): LiveData<List<Todo>>
 
     @Query("SELECT * FROM Todo where id = (:id)")
-    fun get(id: Int): Todo
+    fun get(id: Int): LiveData<Todo>
 
     @Query("DELETE FROM Todo where id = (:id)")
     fun delete(id: Int)
