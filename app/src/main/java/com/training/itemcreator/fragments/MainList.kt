@@ -6,9 +6,9 @@ import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
@@ -22,22 +22,6 @@ class MainList : Fragment() {
     var inputText : TextInputEditText? = null
     var button : Button? = null
 
-    private val onClickItem = { v: View, position: Int ->
-        v.findNavController().navigate(R.id.action_mainList_to_detailPage)
-    }
-
-    private val onAddItem = { _: View ->
-        adapter?.addItem(inputText?.text.toString())
-        recyclerView?.smoothScrollToPosition((adapter?.itemCount ?: 1) - 1)
-        inputText?.text?.clear()
-
-        val inputManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE)
-                as InputMethodManager
-
-        inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken,
-            InputMethodManager.HIDE_NOT_ALWAYS)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,7 +32,7 @@ class MainList : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        adapter = context?.let { MainAdapter(it, mutableListOf("Figo", "Bello"), onClickItem) }
+        adapter = context?.let { MainAdapter(it, mutableListOf(), onClickItem) }
         recyclerView = view?.findViewById<RecyclerView>(R.id.recycler)?.apply {
             adapter = this@MainList.adapter
             layoutManager = LinearLayoutManager(context)
@@ -64,5 +48,21 @@ class MainList : Fragment() {
         button?.setOnClickListener{
             onAddItem(it)
         }
+    }
+
+    private val onClickItem = { _: View, position: Int ->
+        findNavController().navigate(MainListDirections.getDetail(position))
+    }
+
+    private val onAddItem = { _: View ->
+        adapter?.addItem(inputText?.text.toString())
+        recyclerView?.smoothScrollToPosition((adapter?.itemCount ?: 1) - 1)
+        inputText?.text?.clear()
+
+        val inputManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE)
+                as InputMethodManager
+
+        inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken,
+            InputMethodManager.HIDE_NOT_ALWAYS)
     }
 }

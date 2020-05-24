@@ -8,10 +8,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.training.itemcreator.R
+import com.training.itemcreator.model.TodoModel
 
 class MainAdapter(
     private val context: Context,
-    private val data: MutableList<String>,
+    private val data: MutableList<TodoModel>,
     private val clickListener: (v: View, position: Int) -> Unit
 ) : RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
 
@@ -28,7 +29,7 @@ class MainAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.textElement.text =
-            String.format(context.getString(R.string.row_text), data.get(position))
+            String.format(data[position].name ?: "Generic")
     }
 
     // View Holder class
@@ -44,12 +45,12 @@ class MainAdapter(
     }
 
     // Utility
-    fun getItem(position: Int): String {
+    fun getItem(position: Int): TodoModel {
         return data.get(position)
     }
 
     fun addItem(name : String){
-        data.add(name)
+        data.add(TodoModel(data.size, name, null))
         notifyDataSetChanged()
     }
 }
