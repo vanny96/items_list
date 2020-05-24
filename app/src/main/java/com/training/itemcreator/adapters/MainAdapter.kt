@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.training.itemcreator.R
-import com.training.itemcreator.model.TodoModel
+import com.training.itemcreator.model.Todo
 
 class MainAdapter(
     private val context: Context,
-    private var data: List<TodoModel>,
-    private val clickListener: (v: View, position: Int) -> Unit
+    private var data: List<Todo>,
+    private val clickListener: (v: View, todo: Todo) -> Unit
 ) : RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
@@ -39,12 +39,12 @@ class MainAdapter(
         }
 
         override fun onClick(v: View?) {
-            v?.let{ clickListener(it, adapterPosition)}
+            v?.let{ clickListener(it, data[adapterPosition])}
         }
     }
 
     // Utility
-    fun refreshContext(data: List<TodoModel>){
+    fun refreshContext(data: List<Todo>){
         this.data = data
         notifyDataSetChanged()
     }

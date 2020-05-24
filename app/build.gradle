@@ -36,6 +36,10 @@ android {
 
 dependencies {
     def nav_version = "2.3.0-beta01"
+    def room_version = "2.2.5"
+
+    apply plugin: "androidx.navigation.safeargs.kotlin"
+    apply plugin: 'kotlin-kapt'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -53,5 +57,6 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
-    apply plugin: "androidx.navigation.safeargs.kotlin"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 }

@@ -2,8 +2,8 @@
     <string name="app_name">TODO - Organize your activities</string>
 
     <!-- List page-->
-    <string name="add_button">Add row</string>
-    <string name="hint_value">Insert row value</string>
+    <string name="add_button">Add TODO</string>
+    <string name="hint_value">TODO name</string>
 
     <!-- Detail page-->
     <string name="update_button">UPDATE</string>

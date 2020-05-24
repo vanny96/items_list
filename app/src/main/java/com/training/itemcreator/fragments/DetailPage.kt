@@ -10,15 +10,15 @@ import android.widget.Toast
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.textfield.TextInputEditText
 import com.training.itemcreator.R
-import com.training.itemcreator.model.TodoModel
+import com.training.itemcreator.model.Todo
 import com.training.itemcreator.repository.TodoRepository
 import com.training.itemcreator.util.hideKeyboard
 
 class DetailPage : Fragment() {
 
-    private val repository = TodoRepository()
+    private lateinit var repository : TodoRepository
 
-    private val todo: TodoModel by lazy {
+    private val todo: Todo by lazy {
         val args: DetailPageArgs by navArgs()
         repository.getItem(args.itemId)
     }
@@ -32,6 +32,8 @@ class DetailPage : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_detail_page, container, false)
+
+        repository = TodoRepository(view.context)
 
         nameField = view.findViewById(R.id.name_field)
         descriptionField = view.findViewById(R.id.description_field)
@@ -47,15 +49,14 @@ class DetailPage : Fragment() {
         return view
     }
 
-    private val onUpdateClick = View.OnClickListener{ v : View ->
-        todo.id?.let { id ->
-            val updatedTodo = TodoModel(id, nameField.text.toString(), descriptionField.text.toString())
-            repository.update(id, updatedTodo)
-            Toast.makeText(v.context, getText(R.string.todo_updated_toast), Toast.LENGTH_SHORT).show()
-        }
+    private val onUpdateClick = View.OnClickListener { v: View ->
+
+        val updatedTodo = Todo(todo.id, nameField.text.toString(), descriptionField.text.toString())
+        repository.update(updatedTodo)
+        Toast.makeText(v.context, getText(R.string.todo_updated_toast), Toast.LENGTH_SHORT).show()
     }
 
-    private val onFocusChange = View.OnFocusChangeListener{ v, hasFocus ->
-        if(!hasFocus) hideKeyboard(v)
+    private val onFocusChange = View.OnFocusChangeListener { v, hasFocus ->
+        if (!hasFocus) hideKeyboard(v)
     }
 }

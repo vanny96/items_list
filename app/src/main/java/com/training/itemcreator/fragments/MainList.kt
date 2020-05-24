@@ -1,10 +1,10 @@
 package com.training.itemcreator.fragments
 
-import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_main_list.*
 
 class MainList : Fragment() {
 
-    private val repository = TodoRepository()
+    private lateinit var repository: TodoRepository
 
     var adapter: MainAdapter? = null
     var recyclerView: RecyclerView? = null
@@ -32,11 +32,14 @@ class MainList : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_main_list, container, false)
 
-        adapter = context?.let {
-            MainAdapter(it, repository.getList()) { _, id ->
-                findNavController().navigate(MainListDirections.getDetail(id))
+        repository = TodoRepository(view.context)
+
+        adapter = MainAdapter(view.context, repository.getList()) { _, todo ->
+            todo.id?.let {
+                findNavController().navigate(MainListDirections.getDetail(it))
             }
         }
+
         recyclerView = view?.findViewById<RecyclerView>(R.id.recycler)?.apply {
             adapter = this@MainList.adapter
             layoutManager = LinearLayoutManager(context)
@@ -48,7 +51,7 @@ class MainList : Fragment() {
         }
 
         button = view?.findViewById(R.id.button2)
-        button?.setOnClickListener {onAddItem(it)}
+        button?.setOnClickListener { onAddItem(it) }
 
         return view;
     }

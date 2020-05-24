@@ -1,23 +1,27 @@
 package com.training.itemcreator.repository
 
-import com.training.itemcreator.dao.TodoDao
-import com.training.itemcreator.model.TodoModel
+import android.content.Context
+import com.training.itemcreator.database.TODODatabase
+import com.training.itemcreator.model.Todo
 
-class TodoRepository {
+class TodoRepository(context: Context) {
+    private val todoDao = TODODatabase.getInstance(context).todoDao()
 
-    fun getList() : List<TodoModel>{
-        return TodoDao.getList()
+    fun addItem(name: String) {
+        todoDao.add(Todo(null, name, null))
     }
 
-    fun addItem(name: String){
-        TodoDao.add(TodoModel(TodoDao.getList().size, name, null))
+    fun getList(): List<Todo> {
+        return todoDao.getList()
     }
 
-    fun getItem(id: Int) : TodoModel{
-        return TodoDao.get(id)
+    fun getItem(itemId: Int) : Todo {
+        return todoDao.get(itemId)
     }
 
-    fun update(id: Int, updatedTodo: TodoModel) {
-        TodoDao.update(id, updatedTodo)
+    fun update(updatedTodo: Todo) {
+        todoDao.update(updatedTodo)
     }
+
+
 }

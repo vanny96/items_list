@@ -8,21 +8,22 @@
     <fragment
         android:id="@+id/mainList"
         android:name="com.training.itemcreator.fragments.MainList"
-        android:label="MainList" >
+        android:label="TODO List">
         <action
             android:id="@+id/get_detail"
             app:destination="@id/detailPage"
             app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit" />
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/detailPage"
         android:name="com.training.itemcreator.fragments.DetailPage"
-        android:label="fragment_detail_page"
-        tools:layout="@layout/fragment_detail_page" >
+        android:label="TODO {item_id}"
+        tools:layout="@layout/fragment_detail_page">
         <argument
             android:name="item_id"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
     </fragment>
 </navigation>

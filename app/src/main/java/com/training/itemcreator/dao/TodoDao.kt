@@ -1,27 +1,26 @@
 package com.training.itemcreator.dao
 
-import com.training.itemcreator.model.TodoModel
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
+import com.training.itemcreator.model.Todo
 
-object TodoDao {
-    val data = mutableListOf<TodoModel>()
+@Dao
+interface TodoDao {
 
-    fun add(todoModel: TodoModel){
-        data.add(todoModel)
-    }
+    @Insert
+    fun add(todo: Todo)
 
-    fun getList(): List<TodoModel>{
-        return data.toList()
-    }
+    @Query("SELECT * FROM Todo")
+    fun getList(): List<Todo>
 
-    fun get(id: Int): TodoModel{
-        return data[id]
-    }
+    @Query("SELECT * FROM Todo where id = (:id)")
+    fun get(id: Int): Todo
 
-    fun delete(id: Int){
-        data.removeAt(id)
-    }
+    @Query("DELETE FROM Todo where id = (:id)")
+    fun delete(id: Int)
 
-    fun update(id: Int, todoModel: TodoModel){
-        data[id] = todoModel
-    }
+    @Update
+    fun update(todo: Todo)
 }
