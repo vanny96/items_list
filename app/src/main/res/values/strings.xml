@@ -1,9 +1,13 @@
 <resources>
-    <string name="app_name">ItemCreator</string>
+    <string name="app_name">TODO - Organize your activities</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="row_text">I\'m the row called %s!</string>
+    <!-- List page-->
     <string name="add_button">Add row</string>
     <string name="hint_value">Insert row value</string>
+
+    <!-- Detail page-->
+    <string name="update_button">UPDATE</string>
+    <string name="name_label">Name</string>
+    <string name="description_label">Description</string>
+    <string name="todo_updated_toast">Todo updated correctly</string>
 </resources>

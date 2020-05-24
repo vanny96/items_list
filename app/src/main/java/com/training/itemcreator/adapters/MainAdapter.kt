@@ -1,7 +1,6 @@
 package com.training.itemcreator.adapters
 
 import android.content.Context
-import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import com.training.itemcreator.model.TodoModel
 
 class MainAdapter(
     private val context: Context,
-    private val data: MutableList<TodoModel>,
+    private var data: List<TodoModel>,
     private val clickListener: (v: View, position: Int) -> Unit
 ) : RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
 
@@ -45,12 +44,12 @@ class MainAdapter(
     }
 
     // Utility
-    fun getItem(position: Int): TodoModel {
-        return data.get(position)
+    fun refreshContext(data: List<TodoModel>){
+        this.data = data
+        notifyDataSetChanged()
     }
 
-    fun addItem(name : String){
-        data.add(TodoModel(data.size, name, null))
-        notifyDataSetChanged()
+    fun getLastItem() : Int{
+        if(data.isEmpty()) return 0 else return data.size - 1
     }
 }

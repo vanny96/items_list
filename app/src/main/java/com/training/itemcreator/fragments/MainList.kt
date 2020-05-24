@@ -7,32 +7,36 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.training.itemcreator.R
 import com.training.itemcreator.adapters.MainAdapter
+import com.training.itemcreator.repository.TodoRepository
+import com.training.itemcreator.util.hideKeyboard
+import kotlinx.android.synthetic.main.fragment_main_list.*
 
 class MainList : Fragment() {
 
-    var adapter : MainAdapter? = null
+    private val repository = TodoRepository()
+
+    var adapter: MainAdapter? = null
     var recyclerView: RecyclerView? = null
-    var inputText : TextInputEditText? = null
-    var button : Button? = null
+    var inputText: TextInputEditText? = null
+    var button: Button? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_main_list, container, false)
-    }
+        val view = inflater.inflate(R.layout.fragment_main_list, container, false)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        adapter = context?.let { MainAdapter(it, mutableListOf(), onClickItem) }
+        adapter = context?.let {
+            MainAdapter(it, repository.getList()) { _, id ->
+                findNavController().navigate(MainListDirections.getDetail(id))
+            }
+        }
         recyclerView = view?.findViewById<RecyclerView>(R.id.recycler)?.apply {
             adapter = this@MainList.adapter
             layoutManager = LinearLayoutManager(context)
@@ -40,29 +44,21 @@ class MainList : Fragment() {
 
         inputText = view?.findViewById(R.id.input_text)
         inputText?.setOnEditorActionListener { v, actionId, event ->
-            if(actionId == EditorInfo.IME_ACTION_DONE) onAddItem(v) else false;
+            if (actionId == EditorInfo.IME_ACTION_DONE) onAddItem(v) else false;
         }
 
         button = view?.findViewById(R.id.button2)
-        button?.setOnClickListener(View.OnClickListener {  })
-        button?.setOnClickListener{
-            onAddItem(it)
-        }
+        button?.setOnClickListener {onAddItem(it)}
+
+        return view;
     }
 
-    private val onClickItem = { _: View, position: Int ->
-        findNavController().navigate(MainListDirections.getDetail(position))
-    }
-
-    private val onAddItem = { _: View ->
-        adapter?.addItem(inputText?.text.toString())
-        recyclerView?.smoothScrollToPosition((adapter?.itemCount ?: 1) - 1)
+    private val onAddItem = { v: View ->
+        repository.addItem(input_text.text.toString())
+        adapter?.refreshContext(repository.getList())
+        recyclerView?.smoothScrollToPosition(adapter?.getLastItem() ?: 0)
         inputText?.text?.clear()
 
-        val inputManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE)
-                as InputMethodManager
-
-        inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken,
-            InputMethodManager.HIDE_NOT_ALWAYS)
+        hideKeyboard(v)
     }
 }
