@@ -11,12 +11,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.training.itemcreator.R
-import com.training.itemcreator.adapters.MainAdapter
+import com.training.itemcreator.adapters.TodoListRecyclerAdapter
 import com.training.itemcreator.model.Todo
+import com.training.itemcreator.util.TodoItemTouchHelper
 import com.training.itemcreator.util.hideKeyboard
 import com.training.itemcreator.viewmodel.TodoListViewModel
 import com.training.itemcreator.viewmodel.factory.TodoViewModelFactory
@@ -27,7 +29,7 @@ class TodoListFragment : Fragment() {
 
     private lateinit var todoListViewModel: TodoListViewModel
 
-    private var adapter: MainAdapter? = null
+    private lateinit var adapter: TodoListRecyclerAdapter
     private var recyclerView: RecyclerView? = null
 
     private var inputText: TextInputEditText? = null
@@ -53,13 +55,40 @@ class TodoListFragment : Fragment() {
         return view;
     }
 
+    private fun initRecycler(view: View) {
+        val onItemClick: (todo: Todo) -> Unit = { todo ->
+            todo.id?.let {
+                findNavController().navigate(TodoListFragmentDirections.getDetail(it))
+            }
+        }
+
+        val onItemSwipeLeft: (todo: Todo) -> Unit = { todo ->
+            todo.id?.let {
+                todoListViewModel.deleteItem(it)
+            }
+        }
+
+        adapter = TodoListRecyclerAdapter(
+            view.context,
+            Collections.emptyList(),
+            onItemClick,
+            onItemSwipeLeft
+        )
+        recyclerView = view.findViewById<RecyclerView>(R.id.recycler)?.apply {
+            adapter = this@TodoListFragment.adapter
+            layoutManager = LinearLayoutManager(context)
+        }
+
+        ItemTouchHelper(TodoItemTouchHelper(adapter)).attachToRecyclerView(recyclerView)
+    }
+
     private fun initViewModel(view: View) {
         todoListViewModel = ViewModelProvider(this, TodoViewModelFactory(view.context))
             .get(TodoListViewModel::class.java)
 
         todoListViewModel.getTodos().observe(viewLifecycleOwner, Observer {
-            adapter?.data = it
-            adapter?.notifyDataSetChanged()
+            adapter.data = it
+            adapter.notifyDataSetChanged()
         })
 
         todoListViewModel.todoAdded.observe(viewLifecycleOwner, Observer {
@@ -83,32 +112,6 @@ class TodoListFragment : Fragment() {
                 todoListViewModel.switchOffDeletedFlag()
             }
         })
-    }
-
-
-    private fun initRecycler(view: View) {
-        val onItemClick: (todo: Todo) -> Unit = { todo ->
-            todo.id?.let {
-                findNavController().navigate(TodoListFragmentDirections.getDetail(it))
-            }
-        }
-
-        val onItemSwipeLeft: (todo: Todo) -> Unit = { todo ->
-            todo.id?.let {
-                todoListViewModel.deleteItem(it)
-            }
-        }
-
-        adapter = MainAdapter(
-            view.context,
-            Collections.emptyList(),
-            onItemClick,
-            onItemSwipeLeft
-        )
-        recyclerView = view.findViewById<RecyclerView>(R.id.recycler)?.apply {
-            adapter = this@TodoListFragment.adapter
-            layoutManager = LinearLayoutManager(context)
-        }
     }
 
     private val onAddItem = { v: View ->

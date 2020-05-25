@@ -1,20 +1,20 @@
 package com.training.itemcreator.adapters
 
 import android.content.Context
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.GestureDetectorCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.training.itemcreator.R
-import com.training.itemcreator.gestures.TodoItemGestureDetector
 import com.training.itemcreator.model.Todo
 
-class MainAdapter(
+class TodoListRecyclerAdapter(
     context: Context,
     var data: List<Todo>,
     private val clickListener: (todo: Todo) -> Unit,
     private val swipeLeftListener: (todo: Todo) -> Unit
-) : RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
+) : RecyclerView.Adapter<TodoListRecyclerAdapter.MyViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
 
@@ -37,19 +37,15 @@ class MainAdapter(
         return if (data.isEmpty()) 0 else data.size - 1
     }
 
+    fun onItemSwipeLeft(todoPosition: Int){
+        swipeLeftListener(data[todoPosition])
+    }
+
     // View Holder class
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val gestureDetector = GestureDetectorCompat(itemView.context, TodoItemGestureDetector(
-            { clickListener(data[adapterPosition]) },
-            { swipeLeftListener(data[adapterPosition]) }
-        ))
-
         val textElement: TextView = itemView.findViewById<TextView>(R.id.textView).apply {
-            setOnTouchListener(View.OnTouchListener { _, event ->
-                gestureDetector.onTouchEvent(event)
-                return@OnTouchListener true
-            })
+            setOnClickListener { clickListener(data[adapterPosition]) }
         }
     }
 
