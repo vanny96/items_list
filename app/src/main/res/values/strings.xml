@@ -4,6 +4,8 @@
     <!-- List page-->
     <string name="add_button">Add TODO</string>
     <string name="hint_value">TODO name</string>
+    <string name="todo_added_toast">Todo added correctly</string>
+    <string name="todo_removed_toast">Todo removed correctly</string>
 
     <!-- Detail page-->
     <string name="update_button">UPDATE</string>

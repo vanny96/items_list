@@ -24,4 +24,8 @@ class TodoRepository(context: Context) {
     fun update(updatedTodo: Todo) {
         todoDao.update(updatedTodo)
     }
+
+    fun deleteItem(id: Int) {
+        todoDao.delete(id)
+    }
 }

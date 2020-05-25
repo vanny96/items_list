@@ -47,12 +47,24 @@ class TodoDetailFragment : Fragment() {
     }
 
     private fun initViewModel(view: View) {
-        todoDetailViewModel = ViewModelProvider(this, TodoViewModelFactory(view.context, args.itemId))
-            .get(TodoDetailViewModel::class.java)
+        todoDetailViewModel =
+            ViewModelProvider(this, TodoViewModelFactory(view.context, args.itemId))
+                .get(TodoDetailViewModel::class.java)
 
         todoDetailViewModel.getTodo().observe(viewLifecycleOwner, Observer {
             nameField.setText(it.name)
             descriptionField.setText(it.description)
+        })
+
+        todoDetailViewModel.todoUpdated.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                Toast.makeText(
+                    view.context,
+                    getText(R.string.todo_updated_toast),
+                    Toast.LENGTH_SHORT
+                ).show()
+                todoDetailViewModel.switchOffUpdatedFlag()
+            }
         })
     }
 
@@ -60,7 +72,6 @@ class TodoDetailFragment : Fragment() {
         todoDetailViewModel.update(
             Todo(args.itemId, nameField.text.toString(), descriptionField.text.toString())
         )
-        Toast.makeText(v.context, getText(R.string.todo_updated_toast), Toast.LENGTH_SHORT).show()
     }
 
     private val onFocusChange = View.OnFocusChangeListener { v, hasFocus ->

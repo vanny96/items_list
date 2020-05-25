@@ -1,18 +1,19 @@
 package com.training.itemcreator.adapters
 
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
+import androidx.core.view.GestureDetectorCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.training.itemcreator.R
+import com.training.itemcreator.gestures.TodoItemGestureDetector
 import com.training.itemcreator.model.Todo
 
 class MainAdapter(
     context: Context,
     var data: List<Todo>,
-    private val clickListener: (v: View, todo: Todo) -> Unit
+    private val clickListener: (todo: Todo) -> Unit,
+    private val swipeLeftListener: (todo: Todo) -> Unit
 ) : RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
@@ -31,20 +32,25 @@ class MainAdapter(
             String.format(data[position].name ?: "Generic")
     }
 
+    // Utility
+    fun getLastItem(): Int {
+        return if (data.isEmpty()) 0 else data.size - 1
+    }
+
     // View Holder class
-    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        val gestureDetector = GestureDetectorCompat(itemView.context, TodoItemGestureDetector(
+            { clickListener(data[adapterPosition]) },
+            { swipeLeftListener(data[adapterPosition]) }
+        ))
 
         val textElement: TextView = itemView.findViewById<TextView>(R.id.textView).apply {
-            setOnClickListener(this@MyViewHolder)
-        }
-
-        override fun onClick(v: View?) {
-            v?.let{ clickListener(it, data[adapterPosition])}
+            setOnTouchListener(View.OnTouchListener { _, event ->
+                gestureDetector.onTouchEvent(event)
+                return@OnTouchListener true
+            })
         }
     }
 
-    // Utility
-    fun getLastItem() : Int{
-        return if(data.isEmpty()) 0 else data.size - 1
-    }
 }
