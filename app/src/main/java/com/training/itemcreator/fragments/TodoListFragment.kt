@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -17,14 +15,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.training.itemcreator.R
 import com.training.itemcreator.adapters.MainAdapter
-import com.training.itemcreator.repository.TodoRepository
 import com.training.itemcreator.util.hideKeyboard
 import com.training.itemcreator.viewmodel.TodoListViewModel
 import com.training.itemcreator.viewmodel.factory.TodoViewModelFactory
-import kotlinx.android.synthetic.main.fragment_main_list.*
+import kotlinx.android.synthetic.main.todo_list_fragment.*
 import java.util.*
 
-class MainList : Fragment() {
+class TodoListFragment : Fragment() {
 
     private lateinit var todoListViewModel: TodoListViewModel
 
@@ -37,7 +34,7 @@ class MainList : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_main_list, container, false)
+        val view = inflater.inflate(R.layout.todo_list_fragment, container, false)
 
         initRecycler(view)
         initViewModel(view)
@@ -67,11 +64,11 @@ class MainList : Fragment() {
     private fun initRecycler(view: View){
         adapter = MainAdapter(view.context, Collections.emptyList()) { _, todo ->
             todo.id?.let {
-                findNavController().navigate(MainListDirections.getDetail(it))
+                findNavController().navigate(TodoListFragmentDirections.getDetail(it))
             }
         }
         recyclerView = view.findViewById<RecyclerView>(R.id.recycler)?.apply {
-            adapter = this@MainList.adapter
+            adapter = this@TodoListFragment.adapter
             layoutManager = LinearLayoutManager(context)
         }
     }

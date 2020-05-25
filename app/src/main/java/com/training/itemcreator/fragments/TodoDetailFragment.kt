@@ -7,24 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.textfield.TextInputEditText
 import com.training.itemcreator.R
 import com.training.itemcreator.model.Todo
-import com.training.itemcreator.repository.TodoRepository
 import com.training.itemcreator.util.hideKeyboard
 import com.training.itemcreator.viewmodel.TodoDetailViewModel
-import com.training.itemcreator.viewmodel.TodoListViewModel
 import com.training.itemcreator.viewmodel.factory.TodoViewModelFactory
 
-class DetailPage : Fragment() {
+class TodoDetailFragment : Fragment() {
 
     private lateinit var todoDetailViewModel: TodoDetailViewModel
 
-    private val args: DetailPageArgs by navArgs()
+    private val args: TodoDetailFragmentArgs by navArgs()
 
     lateinit var nameField: TextInputEditText
     lateinit var descriptionField: TextInputEditText
@@ -34,7 +31,7 @@ class DetailPage : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_detail_page, container, false)
+        val view = inflater.inflate(R.layout.todo_detail_fragment, container, false)
 
         initViewModel(view)
 

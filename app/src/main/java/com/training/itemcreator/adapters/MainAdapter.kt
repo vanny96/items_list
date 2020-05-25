@@ -18,7 +18,7 @@ class MainAdapter(
     private val inflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = inflater.inflate(R.layout.row_layout, parent, false)
+        val view = inflater.inflate(R.layout.todo_list_row_layout, parent, false)
         return MyViewHolder(view)
     }
 

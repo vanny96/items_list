@@ -14,7 +14,7 @@
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        tools:context=".fragments.DetailPage">
+        tools:context=".fragments.TodoDetailFragment">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout"
