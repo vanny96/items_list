@@ -5,9 +5,14 @@ import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 
 class MainActivity : AppCompatActivity() {
+
+    private val toolbar: Toolbar by lazy {
+        findViewById<Toolbar>(R.id.toolbar)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,8 +20,10 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment)
         val toolbarConfig = AppBarConfiguration(navController.graph)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar.setupWithNavController(navController, toolbarConfig)
 
+        setSupportActionBar(toolbar)
+        setupActionBarWithNavController(navController, toolbarConfig)
+        toolbar.setupWithNavController(navController, toolbarConfig)
     }
 }
+

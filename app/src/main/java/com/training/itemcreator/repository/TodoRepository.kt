@@ -5,12 +5,13 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import com.training.itemcreator.database.TodoDatabase
 import com.training.itemcreator.model.Todo
+import com.training.itemcreator.util.enums.Priority
 
 class TodoRepository(context: Context) {
     private val todoDao = TodoDatabase.getInstance(context).todoDao()
 
     fun addItem(name: String) {
-        todoDao.add(Todo(null, name, null))
+        todoDao.add(Todo(null, name, null, Priority.LOW))
     }
 
     fun getList(): LiveData<List<Todo>> {

@@ -32,6 +32,7 @@
                 android:id="@+id/name_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@null"
                 android:cursorVisible="false"
                 android:imeOptions="actionDone"
                 android:singleLine="true" />
@@ -61,7 +62,10 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/description_field"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="start"
+                android:minLines="3" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -74,17 +78,58 @@
             app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
             app:layout_constraintStart_toStartOf="@+id/textInputLayout2" />
 
+        <RadioGroup
+            android:id="@+id/PriorityGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@+id/textInputLayout2"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout2"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
+
+            <RadioButton
+                android:id="@+id/LowPriority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="#00BCD4"
+                android:text="@string/low_priority_radio"
+                android:textColor="@android:color/white" />
+
+            <RadioButton
+                android:id="@+id/MediumPriority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="#FFEB3B"
+                android:text="@string/medium_priority_radio"
+                android:textColor="@android:color/white" />
+
+            <RadioButton
+                android:id="@+id/HighPriority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="#FF0000"
+                android:text="@string/high_priority_radio"
+                android:textColor="@android:color/white" />
+        </RadioGroup>
+
         <Button
             android:id="@+id/update_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="140dp"
+            android:layout_marginTop="70dp"
             android:layout_marginBottom="70dp"
+            android:background="@color/colorPrimary"
             android:text="@string/update_button"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+            app:layout_constraintEnd_toEndOf="@+id/textInputLayout2"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout2"
+            app:layout_constraintTop_toBottomOf="@+id/PriorityGroup" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
