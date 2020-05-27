@@ -1,6 +1,5 @@
 package com.training.itemcreator.util.dialogs
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -9,41 +8,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.DialogFragment
 import com.training.itemcreator.R
+import com.training.itemcreator.fragments.TodoListFragment
 import com.training.itemcreator.util.TodoFilterTracker
+import com.training.itemcreator.viewmodel.TodoListViewModel
 
-class TodoFilterDialogFragment(
-    private val todoFilterTracker: TodoFilterTracker,
-    private val onUpdateFilters: (TodoFilterTracker) -> Unit
-) : DialogFragment() {
+class TodoFilterDialogFragment() : DialogFragment() {
+
+    private lateinit var todoListViewModel: TodoListViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(activity).apply {
+        return AlertDialog.Builder(requireContext()).apply {
             setView(R.layout.dialog_filter_todo)
             setTitle(R.string.filter_label)
-        }.create().also {
-            it.setOnShowListener { _ ->
-                val lowPriorityButton = it.findViewById<SwitchCompat>(R.id.filter_low_switch)
-                val midPriorityButton = it.findViewById<SwitchCompat>(R.id.filter_mid_switch)
-                val highPriorityButton = it.findViewById<SwitchCompat>(R.id.filter_high_switch)
+        }.create().apply {
+            this.setOnShowListener { _ ->
+                val lowPriorityButton = this.findViewById<SwitchCompat>(R.id.filter_low_switch)
+                val midPriorityButton = this.findViewById<SwitchCompat>(R.id.filter_mid_switch)
+                val highPriorityButton = this.findViewById<SwitchCompat>(R.id.filter_high_switch)
 
-                val updateFiltersButton = it.findViewById<Button>(R.id.update_filters_button)
+                val updateFiltersButton = this.findViewById<Button>(R.id.update_filters_button)
 
-                lowPriorityButton.isChecked = todoFilterTracker.lowAllowed
-                midPriorityButton.isChecked = todoFilterTracker.midAllowed
-                highPriorityButton.isChecked = todoFilterTracker.highAllowed
+                lowPriorityButton?.isChecked = todoListViewModel.todoFilterUtil.lowAllowed
+                midPriorityButton?.isChecked = todoListViewModel.todoFilterUtil.midAllowed
+                highPriorityButton?.isChecked = todoListViewModel.todoFilterUtil.highAllowed
 
-                updateFiltersButton.setOnClickListener {_ ->
-                    onUpdateFilters(
-                        TodoFilterTracker(
-                            lowPriorityButton.isChecked,
-                            midPriorityButton.isChecked,
-                            highPriorityButton.isChecked
-                        )
+                updateFiltersButton?.setOnClickListener { _ ->
+                    todoListViewModel.todoFilterUtil = TodoFilterTracker(
+                        lowPriorityButton?.isChecked ?: false,
+                        midPriorityButton?.isChecked ?: false,
+                        highPriorityButton?.isChecked ?: false
                     )
-                    it.dismiss()
+                    this.dismiss()
                 }
             }
         }
@@ -55,6 +54,7 @@ class TodoFilterDialogFragment(
         savedInstanceState: Bundle?
     ): View? {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        todoListViewModel = (parentFragment as TodoListFragment).todoListViewModel
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }

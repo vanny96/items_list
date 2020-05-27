@@ -14,17 +14,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.training.itemcreator.R
 import com.training.itemcreator.adapters.TodoListRecyclerAdapter
 import com.training.itemcreator.model.Todo
-import com.training.itemcreator.util.TodoFilterTracker
 import com.training.itemcreator.util.TodoItemTouchHelper
 import com.training.itemcreator.util.TodoSorts
-import com.training.itemcreator.util.dialogs.AddItemPopup
+import com.training.itemcreator.util.dialogs.AddItemDialogFragment
 import com.training.itemcreator.util.dialogs.TodoFilterDialogFragment
 import com.training.itemcreator.viewmodel.TodoListViewModel
 import com.training.itemcreator.viewmodel.factory.TodoViewModelFactory
 
 class TodoListFragment : Fragment() {
 
-    private lateinit var todoListViewModel: TodoListViewModel
+    lateinit var todoListViewModel: TodoListViewModel
 
     private lateinit var adapter: TodoListRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
@@ -36,7 +35,6 @@ class TodoListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.todo_list_fragment, container, false)
-
         setHasOptionsMenu(true)
 
         initRecycler(view)
@@ -44,7 +42,7 @@ class TodoListFragment : Fragment() {
 
         actionButton = view.findViewById(R.id.floatingActionButton)
         actionButton.setOnClickListener {
-            AddItemPopup.launchPopup(view.context, onAddItem)
+            AddItemDialogFragment().show(childFragmentManager, "add_todo_dialog")
         }
 
         return view;
@@ -65,10 +63,7 @@ class TodoListFragment : Fragment() {
                 true
             }
             R.id.filter_action -> {
-                TodoFilterDialogFragment(
-                    todoListViewModel.todoFilterUtil
-                ) { todoListViewModel.todoFilterUtil = it }
-                    .show(parentFragmentManager, null)
+                TodoFilterDialogFragment().show(childFragmentManager, "filter_fragment")
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -133,7 +128,7 @@ class TodoListFragment : Fragment() {
         })
     }
 
-    private val onAddItem = { name: String ->
+    val onAddItem = { name: String ->
         todoListViewModel.addItem(name)
     }
 }
