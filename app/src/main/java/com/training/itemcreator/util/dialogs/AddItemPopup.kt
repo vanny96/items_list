@@ -10,13 +10,12 @@ import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.training.itemcreator.R
-import com.training.itemcreator.util.hideKeyboard
+import com.training.itemcreator.util.KeyboardUtils
 
 object AddItemPopup {
-
     fun launchPopup(context: Context, onButtonPressed: (name: String) -> Unit) {
         val builder = AlertDialog.Builder(context).apply {
-            setView(R.layout.dialog_popup_layout)
+            setView(R.layout.dialog_add_todo)
         }
 
         builder.show().apply {
@@ -34,7 +33,7 @@ object AddItemPopup {
 
             inputText?.apply {
                 onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-                    if (!hasFocus) hideKeyboard(
+                    if (!hasFocus) KeyboardUtils.hideKeyboard(
                         this
                     ) else
                         window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)

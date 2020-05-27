@@ -16,8 +16,8 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.textfield.TextInputEditText
 import com.training.itemcreator.R
 import com.training.itemcreator.model.Todo
+import com.training.itemcreator.util.KeyboardUtils
 import com.training.itemcreator.util.enums.Priority
-import com.training.itemcreator.util.hideKeyboard
 import com.training.itemcreator.viewmodel.TodoDetailViewModel
 import com.training.itemcreator.viewmodel.factory.TodoViewModelFactory
 
@@ -111,6 +111,6 @@ class TodoDetailFragment : Fragment() {
     }
 
     private val onFocusChange = View.OnFocusChangeListener { v, hasFocus ->
-        if (!hasFocus) hideKeyboard(v)
+        if (!hasFocus) KeyboardUtils.hideKeyboard(v)
     }
 }

@@ -6,6 +6,8 @@
     <string name="natural_sort">Natural Order</string>
     <string name="priority_sort">Priority Order</string>
 
+    <string name="filter_action">Filter</string>
+
     <!-- List page-->
     <string name="add_button">Add TODO</string>
     <string name="hint_value">TODO name</string>
@@ -17,7 +19,9 @@
     <string name="name_label">Name</string>
     <string name="description_label">Description</string>
     <string name="todo_updated_toast">Todo updated correctly</string>
-    <string name="low_priority_radio">Low</string>
-    <string name="medium_priority_radio">Medium</string>
-    <string name="high_priority_radio">High</string>
+    <string name="low_priority">Low</string>
+    <string name="medium_priority">Medium</string>
+    <string name="high_priority">High</string>
+    <string name="filter_label">Filter TODO</string>
+    <string name="update_filters">UPDATE FILTERS</string>
 </resources>

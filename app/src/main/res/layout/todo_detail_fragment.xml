@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="#00BCD4"
-                android:text="@string/low_priority_radio"
+                android:text="@string/low_priority"
                 android:textColor="@android:color/white" />
 
             <RadioButton
@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="#FFEB3B"
-                android:text="@string/medium_priority_radio"
+                android:text="@string/medium_priority"
                 android:textColor="@android:color/white" />
 
             <RadioButton
@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="#FF0000"
-                android:text="@string/high_priority_radio"
+                android:text="@string/high_priority"
                 android:textColor="@android:color/white" />
         </RadioGroup>
 

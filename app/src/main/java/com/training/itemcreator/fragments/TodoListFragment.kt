@@ -3,7 +3,6 @@ package com.training.itemcreator.fragments
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,9 +14,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.training.itemcreator.R
 import com.training.itemcreator.adapters.TodoListRecyclerAdapter
 import com.training.itemcreator.model.Todo
+import com.training.itemcreator.util.TodoFilterTracker
 import com.training.itemcreator.util.TodoItemTouchHelper
 import com.training.itemcreator.util.TodoSorts
 import com.training.itemcreator.util.dialogs.AddItemPopup
+import com.training.itemcreator.util.dialogs.TodoFilterDialogFragment
 import com.training.itemcreator.viewmodel.TodoListViewModel
 import com.training.itemcreator.viewmodel.factory.TodoViewModelFactory
 
@@ -54,13 +55,20 @@ class TodoListFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
+        return when (item.itemId) {
             R.id.sort_natural_order -> {
-                todoListViewModel.setSortFunction(TodoSorts.naturalOrder)
+                todoListViewModel.sortFunction = TodoSorts.naturalOrder
                 true
             }
             R.id.sort_priority_order -> {
-                todoListViewModel.setSortFunction(TodoSorts.priorityOrder)
+                todoListViewModel.sortFunction = TodoSorts.priorityOrder
+                true
+            }
+            R.id.filter_action -> {
+                TodoFilterDialogFragment(
+                    todoListViewModel.todoFilterUtil
+                ) { todoListViewModel.todoFilterUtil = it }
+                    .show(parentFragmentManager, null)
                 true
             }
             else -> super.onOptionsItemSelected(item)
