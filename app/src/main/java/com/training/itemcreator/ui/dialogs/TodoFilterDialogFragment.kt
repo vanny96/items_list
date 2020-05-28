@@ -14,6 +14,7 @@ import androidx.fragment.app.DialogFragment
 import com.training.itemcreator.R
 import com.training.itemcreator.fragments.TodoListFragment
 import com.training.itemcreator.util.TodoFilterTracker
+import com.training.itemcreator.util.enums.Priority
 import com.training.itemcreator.viewmodel.TodoListViewModel
 
 class TodoFilterDialogFragment() : DialogFragment() {
@@ -31,16 +32,16 @@ class TodoFilterDialogFragment() : DialogFragment() {
 
                 val updateFiltersButton = this.findViewById<Button>(R.id.update_filters_button)
 
-                lowPriorityButton?.isChecked = todoListViewModel.todoFilterUtil.lowAllowed
-                midPriorityButton?.isChecked = todoListViewModel.todoFilterUtil.midAllowed
-                highPriorityButton?.isChecked = todoListViewModel.todoFilterUtil.highAllowed
+                lowPriorityButton?.isChecked = Priority.LOW in todoListViewModel.filterOptions
+                midPriorityButton?.isChecked = Priority.MEDIUM in todoListViewModel.filterOptions
+                highPriorityButton?.isChecked = Priority.HIGH in todoListViewModel.filterOptions
 
                 updateFiltersButton?.setOnClickListener { _ ->
-                    todoListViewModel.todoFilterUtil = TodoFilterTracker(
-                        lowPriorityButton?.isChecked ?: false,
-                        midPriorityButton?.isChecked ?: false,
-                        highPriorityButton?.isChecked ?: false
-                    )
+                    todoListViewModel.filterOptions = mutableListOf<Priority>().apply {
+                        if(lowPriorityButton?.isChecked == true) add(Priority.LOW)
+                        if(midPriorityButton?.isChecked == true) add(Priority.MEDIUM)
+                        if(highPriorityButton?.isChecked == true) add(Priority.HIGH)
+                    }
                     this.dismiss()
                 }
             }

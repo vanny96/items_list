@@ -1,4 +1,4 @@
-package com.training.itemcreator.util.adapters
+package com.training.itemcreator.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

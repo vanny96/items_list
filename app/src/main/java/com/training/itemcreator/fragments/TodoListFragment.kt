@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.training.itemcreator.R
-import com.training.itemcreator.util.adapters.TodoListRecyclerAdapter
+import com.training.itemcreator.ui.adapters.TodoListRecyclerAdapter
 import com.training.itemcreator.model.Todo
 import com.training.itemcreator.util.TodoItemTouchHelper
-import com.training.itemcreator.util.TodoSorts
+import com.training.itemcreator.util.TodoSort
 import com.training.itemcreator.ui.dialogs.AddItemDialogFragment
 import com.training.itemcreator.ui.dialogs.TodoFilterDialogFragment
 import com.training.itemcreator.viewmodel.TodoListViewModel
@@ -55,11 +55,11 @@ class TodoListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.sort_natural_order -> {
-                todoListViewModel.sortFunction = TodoSorts.naturalOrder
+                todoListViewModel.sortOption = TodoSort.ID
                 true
             }
             R.id.sort_priority_order -> {
-                todoListViewModel.sortFunction = TodoSorts.priorityOrder
+                todoListViewModel.sortOption = TodoSort.PRIORITY
                 true
             }
             R.id.filter_action -> {
@@ -100,7 +100,7 @@ class TodoListFragment : Fragment() {
         todoListViewModel = ViewModelProvider(this, TodoViewModelFactory(view.context))
             .get(TodoListViewModel::class.java)
 
-        todoListViewModel.getTodos().observe(viewLifecycleOwner, Observer {
+        todoListViewModel.todoList.observe(viewLifecycleOwner, Observer {
             adapter.data = it
             adapter.notifyDataSetChanged()
         })
