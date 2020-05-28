@@ -85,6 +85,10 @@ class TodoDetailFragment : Fragment() {
             ViewModelProvider(this, TodoViewModelFactory(view.context, args.itemId))
                 .get(TodoDetailViewModel::class.java)
 
+        todoDetailViewModel.getTodo().value?.let {
+            todoReference = it
+        }
+
         todoDetailViewModel.getTodo().observe(viewLifecycleOwner, Observer {
             todoReference = it
 
