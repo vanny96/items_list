@@ -8,7 +8,7 @@ import com.training.itemcreator.util.enums.Priority
 @Entity
 data class Todo(
     @PrimaryKey(autoGenerate = true) val id: Int?,
-    val name: String,
-    val description: String?,
-    val priority: Priority
+    var name: String,
+    var description: String?,
+    var priority: Priority
 )

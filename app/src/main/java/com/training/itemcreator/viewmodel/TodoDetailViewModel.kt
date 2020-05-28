@@ -8,12 +8,10 @@ import com.training.itemcreator.repository.TodoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class TodoDetailViewModel(private val repository: TodoRepository, private val todoId: Int) : ViewModel() {
-    private val todo: LiveData<Todo> = repository.getItem(todoId)
-
-    fun getTodo() : LiveData<Todo>{
-        return todo
-    }
+class TodoDetailViewModel(private val repository: TodoRepository, todoId: Int) : ViewModel() {
+    val todo: LiveData<Todo> = repository.getItem(todoId)
+    var editedTodo: Todo? = null
+    var edited = false
 
     fun update(todo: Todo){
         viewModelScope.launch(Dispatchers.IO) {

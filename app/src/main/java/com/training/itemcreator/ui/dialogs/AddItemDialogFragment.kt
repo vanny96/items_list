@@ -1,7 +1,6 @@
-package com.training.itemcreator.util.dialogs
+package com.training.itemcreator.ui.dialogs
 
 import android.app.Dialog
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle

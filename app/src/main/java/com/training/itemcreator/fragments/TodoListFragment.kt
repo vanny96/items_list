@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.training.itemcreator.R
-import com.training.itemcreator.adapters.TodoListRecyclerAdapter
+import com.training.itemcreator.util.adapters.TodoListRecyclerAdapter
 import com.training.itemcreator.model.Todo
 import com.training.itemcreator.util.TodoItemTouchHelper
 import com.training.itemcreator.util.TodoSorts
-import com.training.itemcreator.util.dialogs.AddItemDialogFragment
-import com.training.itemcreator.util.dialogs.TodoFilterDialogFragment
+import com.training.itemcreator.ui.dialogs.AddItemDialogFragment
+import com.training.itemcreator.ui.dialogs.TodoFilterDialogFragment
 import com.training.itemcreator.viewmodel.TodoListViewModel
 import com.training.itemcreator.viewmodel.factory.TodoViewModelFactory
 

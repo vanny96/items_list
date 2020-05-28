@@ -27,9 +27,6 @@ class TodoDetailFragment : Fragment() {
 
     private val args: TodoDetailFragmentArgs by navArgs()
 
-    var edited = false
-    lateinit var todoReference: Todo
-
     lateinit var nameField: TextInputEditText
     lateinit var descriptionField: TextInputEditText
     lateinit var updateButton: Button
@@ -50,16 +47,26 @@ class TodoDetailFragment : Fragment() {
 
         nameField.apply {
             onFocusChangeListener = onFocusChange
-            doAfterTextChanged { checkIfEdited() }
+            doAfterTextChanged {
+                todoDetailViewModel.editedTodo?.name = nameField.text.toString()
+                checkIfEdited()
+            }
         }
 
         descriptionField.apply {
             onFocusChangeListener = onFocusChange
-            doAfterTextChanged { checkIfEdited() }
+            doAfterTextChanged {
+                todoDetailViewModel.editedTodo?.description = descriptionField.text.toString()
+                checkIfEdited()
+            }
         }
 
         priorityGroup.apply {
-            setOnCheckedChangeListener { _, _ -> checkIfEdited() }
+            setOnCheckedChangeListener { _, _ ->
+                todoDetailViewModel.editedTodo?.priority =
+                    Priority.fromId(priorityGroup.checkedRadioButtonId)
+                checkIfEdited()
+            }
         }
 
         updateButton.setOnClickListener(onUpdateClick(findNavController()))
@@ -68,15 +75,12 @@ class TodoDetailFragment : Fragment() {
     }
 
     private fun checkIfEdited() {
-        if (descriptionField.text.toString() != todoReference.description ||
-            nameField.text.toString() != todoReference.name ||
-            Priority.fromId(priorityGroup.checkedRadioButtonId) != todoReference.priority
-        ) {
-            edited = true
-            updateButton.visibility = View.VISIBLE
-        } else {
-            edited = false
+        if (todoDetailViewModel.editedTodo?.equals(todoDetailViewModel.todo.value) == true) {
+            todoDetailViewModel.edited = false
             updateButton.visibility = View.GONE
+        } else {
+            todoDetailViewModel.edited = true
+            updateButton.visibility = View.VISIBLE
         }
     }
 
@@ -85,14 +89,18 @@ class TodoDetailFragment : Fragment() {
             ViewModelProvider(this, TodoViewModelFactory(view.context, args.itemId))
                 .get(TodoDetailViewModel::class.java)
 
-        todoDetailViewModel.getTodo().value?.let {
-            todoReference = it
+        // If the fragment is destroyed and recreated, this will make sure that the data is preserved
+        todoDetailViewModel.editedTodo?.let {
+            nameField.setText(it.name)
+            descriptionField.setText(it.description)
+            priorityGroup.check(it.priority.id)
         }
 
-        todoDetailViewModel.getTodo().observe(viewLifecycleOwner, Observer {
-            todoReference = it
+        todoDetailViewModel.todo.observe(viewLifecycleOwner, Observer {
+            todoDetailViewModel.editedTodo =
+                todoDetailViewModel.editedTodo ?: Todo(it.id, it.name, it.description, it.priority)
 
-            if (!edited) {
+            if (!todoDetailViewModel.edited) {
                 nameField.setText(it.name)
                 descriptionField.setText(it.description)
                 priorityGroup.check(it.priority.id)

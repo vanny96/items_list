@@ -1,4 +1,4 @@
-package com.training.itemcreator.util.dialogs
+package com.training.itemcreator.ui.dialogs
 
 import android.app.Dialog
 import android.graphics.Color

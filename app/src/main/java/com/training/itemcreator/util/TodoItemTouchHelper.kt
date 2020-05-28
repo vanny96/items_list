@@ -3,7 +3,7 @@ package com.training.itemcreator.util
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.LEFT
 import androidx.recyclerview.widget.RecyclerView
-import com.training.itemcreator.adapters.TodoListRecyclerAdapter
+import com.training.itemcreator.util.adapters.TodoListRecyclerAdapter
 
 class TodoItemTouchHelper(
     private val adapter: TodoListRecyclerAdapter
