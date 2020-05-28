@@ -23,7 +23,6 @@ class TodoFilterDialogFragment() : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext()).apply {
             setView(R.layout.dialog_filter_todo)
-            setTitle(R.string.filter_label)
         }.create().apply {
             this.setOnShowListener { _ ->
                 val lowPriorityButton = this.findViewById<SwitchCompat>(R.id.filter_low_switch)
