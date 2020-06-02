@@ -12,8 +12,10 @@
         <action
             android:id="@+id/get_detail"
             app:destination="@id/detailPage"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
+            app:enterAnim="@anim/enter_animation"
+            app:exitAnim="@anim/exit_animation"
+            app:popEnterAnim="@anim/enter_animation_pop"
+            app:popExitAnim="@anim/exit_animation_pop"
             app:popUpToInclusive="false" />
     </fragment>
     <fragment

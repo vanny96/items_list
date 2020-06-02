@@ -34,11 +34,11 @@ class TodoFilterDialogFragment() : DialogFragment() {
             setView(R.layout.dialog_filter_todo)
         }.create().apply {
             setOnShowListener { _ ->
-                lowPriorityButton = this.findViewById<SwitchCompat>(R.id.filter_low_switch)
-                midPriorityButton = this.findViewById<SwitchCompat>(R.id.filter_mid_switch)
-                highPriorityButton = this.findViewById<SwitchCompat>(R.id.filter_high_switch)
+                lowPriorityButton = this.findViewById(R.id.filter_low_switch)
+                midPriorityButton = this.findViewById(R.id.filter_mid_switch)
+                highPriorityButton = this.findViewById(R.id.filter_high_switch)
 
-                updateFiltersButton = this.findViewById<Button>(R.id.update_filters_button)
+                updateFiltersButton = this.findViewById(R.id.update_filters_button)
 
                 setupRadioButtons()
 
@@ -58,7 +58,7 @@ class TodoFilterDialogFragment() : DialogFragment() {
         super.onCancel(dialog)
     }
 
-    fun setupRadioButtons() {
+    private fun setupRadioButtons() {
         todoListViewModel.tempFilterOptions?.let {
             lowPriorityButton?.isChecked = Priority.LOW in it
             midPriorityButton?.isChecked = Priority.MEDIUM in it
