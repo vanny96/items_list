@@ -54,9 +54,9 @@ class TodoListViewModel(private val repository: TodoRepository) : ViewModel() {
         }
     }
 
-    fun addItem(name: String) {
+    fun addItem(todo: Todo) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.addItem(name)
+            repository.addItem(todo)
             todoAdded.postValue(true)
         }
     }

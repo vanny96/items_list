@@ -128,7 +128,7 @@ class TodoListFragment : Fragment() {
         })
     }
 
-    val onAddItem = { name: String ->
-        todoListViewModel.addItem(name)
+    val onAddItem = { todo: Todo ->
+        todoListViewModel.addItem(todo)
     }
 }

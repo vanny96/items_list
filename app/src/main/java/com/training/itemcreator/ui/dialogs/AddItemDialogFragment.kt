@@ -10,16 +10,19 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
+import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.training.itemcreator.R
 import com.training.itemcreator.fragments.TodoListFragment
+import com.training.itemcreator.model.Todo
 import com.training.itemcreator.util.KeyboardUtils
+import com.training.itemcreator.util.enums.Priority
 
 class AddItemDialogFragment : DialogFragment() {
 
-    private lateinit var onButtonPressed: (String) -> Unit
+    private lateinit var onButtonPressed: (Todo) -> Unit
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext()).apply {
@@ -29,30 +32,32 @@ class AddItemDialogFragment : DialogFragment() {
 
                 //Setups the edit field and add button
                 val button: Button? = findViewById(R.id.add_button)
-                val inputText: TextInputEditText? = findViewById(R.id.new_todo_name_input)
+                val nameInput: TextInputEditText? = findViewById(R.id.new_todo_name_input)
+                val descriptionInput: TextInputEditText? =
+                    findViewById(R.id.new_todo_description_input)
+                val priorityGroup: RadioGroup? = findViewById(R.id.PriorityGroup)
 
                 button?.setOnClickListener {
-                    onButtonPressed(inputText?.text.toString())
+                    onButtonPressed(Todo(
+                        null,
+                        nameInput?.text.toString(),
+                        descriptionInput?.text.toString(),
+                        priorityGroup?.checkedRadioButtonId?.let { it -> Priority.fromId(it) }
+                            ?: Priority.LOW
+                    ))
                     this.cancel()
                 }
 
-                inputText?.apply {
+                nameInput?.apply {
                     onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-                        if (!hasFocus) KeyboardUtils.hideKeyboard(
-                            this
-                        ) else
-                            window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+                        if (!hasFocus) KeyboardUtils.hideKeyboard(this)
+                    }
+                }
 
+                descriptionInput?.apply {
+                    onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+                        if (!hasFocus) KeyboardUtils.hideKeyboard(this)
                     }
-                    setOnEditorActionListener { _, action, _ ->
-                        if (action == EditorInfo.IME_ACTION_DONE) {
-                            button?.performClick()
-                            return@setOnEditorActionListener true
-                        } else {
-                            return@setOnEditorActionListener false
-                        }
-                    }
-                    requestFocus()
                 }
             }
         }

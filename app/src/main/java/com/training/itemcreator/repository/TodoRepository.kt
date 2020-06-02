@@ -13,8 +13,8 @@ class TodoRepository(context: Context) {
     var currentListLiveData : LiveData<List<Todo>>? = null
     private set
 
-    fun addItem(name: String) {
-        todoDao.add(Todo(null, name, null, Priority.LOW))
+    fun addItem(todo: Todo) {
+        todoDao.add(todo)
     }
 
     fun fetchTodos(sortOption: TodoSort, filterOptions: List<Priority>) : LiveData<List<Todo>> {
