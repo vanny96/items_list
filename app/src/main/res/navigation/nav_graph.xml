@@ -21,11 +21,13 @@
     <fragment
         android:id="@+id/detailPage"
         android:name="com.training.itemcreator.fragments.TodoDetailFragment"
-        android:label="TODO {item_id}"
+        android:label="{item_name}"
         tools:layout="@layout/todo_detail_fragment">
         <argument
+            android:name="item_name"
+            app:argType="string" />
+        <argument
             android:name="item_id"
-            android:defaultValue="-1"
             app:argType="integer" />
     </fragment>
 </navigation>

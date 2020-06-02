@@ -73,7 +73,7 @@ class TodoListFragment : Fragment() {
     private fun initRecycler(view: View) {
         val onItemClick: (Todo) -> Unit = { todo ->
             todo.id?.let {
-                findNavController().navigate(TodoListFragmentDirections.getDetail(it))
+                findNavController().navigate(TodoListFragmentDirections.getDetail(todo.name, it))
             }
         }
 
