@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,14 +39,18 @@ class AddItemDialogFragment : DialogFragment() {
                 val priorityGroup: RadioGroup? = findViewById(R.id.PriorityGroup)
 
                 button?.setOnClickListener {
-                    onButtonPressed(Todo(
-                        null,
-                        nameInput?.text.toString(),
-                        descriptionInput?.text.toString(),
-                        priorityGroup?.checkedRadioButtonId?.let { it -> Priority.fromId(it) }
-                            ?: Priority.LOW
-                    ))
-                    this.cancel()
+                    if(TextUtils.isEmpty(nameInput?.text?.trim())){
+                        nameInput?.error = getText(R.string.name_required_error)
+                    } else {
+                        onButtonPressed(Todo(
+                            null,
+                            nameInput?.text.toString(),
+                            descriptionInput?.text.toString(),
+                            priorityGroup?.checkedRadioButtonId?.let { it -> Priority.fromId(it) }
+                                ?: Priority.LOW
+                        ))
+                        this.cancel()
+                    }
                 }
 
                 nameInput?.apply {

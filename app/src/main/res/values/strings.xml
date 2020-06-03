@@ -25,4 +25,5 @@
     <string name="filter_label">Filter TODO</string>
     <string name="update_filters">UPDATE FILTERS</string>
     <string name="todo_undo_removed">UNDO</string>
+    <string name="name_required_error">Name is required</string>
 </resources>

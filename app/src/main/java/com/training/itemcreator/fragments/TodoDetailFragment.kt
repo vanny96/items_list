@@ -1,6 +1,7 @@
 package com.training.itemcreator.fragments
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,10 +28,10 @@ class TodoDetailFragment : Fragment() {
 
     private val args: TodoDetailFragmentArgs by navArgs()
 
-    lateinit var nameField: TextInputEditText
-    lateinit var descriptionField: TextInputEditText
-    lateinit var updateButton: Button
-    lateinit var priorityGroup: RadioGroup
+    private lateinit var nameField: TextInputEditText
+    private lateinit var descriptionField: TextInputEditText
+    private lateinit var updateButton: Button
+    private lateinit var priorityGroup: RadioGroup
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -110,15 +111,19 @@ class TodoDetailFragment : Fragment() {
 
     private val onUpdateClick = { nav: NavController ->
         View.OnClickListener {
-            todoDetailViewModel.update(
-                Todo(
-                    args.itemId,
-                    nameField.text.toString(),
-                    descriptionField.text.toString(),
-                    Priority.fromId(priorityGroup.checkedRadioButtonId)
+            if(TextUtils.isEmpty(nameField.text?.trim())){
+                nameField.error = getText(R.string.name_required_error)
+            } else {
+                todoDetailViewModel.update(
+                    Todo(
+                        args.itemId,
+                        nameField.text.toString(),
+                        descriptionField.text.toString(),
+                        Priority.fromId(priorityGroup.checkedRadioButtonId)
+                    )
                 )
-            )
-            nav.popBackStack()
+                nav.popBackStack()
+            }
         }
     }
 
