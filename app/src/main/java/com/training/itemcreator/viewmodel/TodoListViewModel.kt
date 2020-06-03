@@ -35,7 +35,6 @@ class TodoListViewModel(private val repository: TodoRepository) : ViewModel() {
 
     // Flags used to notify when an operation is completed
     val todoAdded = MutableLiveData<Boolean>()
-    val todoDeleted = MutableLiveData<Boolean>()
 
     // Operations
     fun refreshData() {
@@ -50,7 +49,6 @@ class TodoListViewModel(private val repository: TodoRepository) : ViewModel() {
     fun deleteItem(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteItem(id)
-            todoDeleted.postValue(true)
         }
     }
 
@@ -64,9 +62,5 @@ class TodoListViewModel(private val repository: TodoRepository) : ViewModel() {
     // Notify if operation completed
     fun switchOffAddedFlag() {
         todoAdded.value = false
-    }
-
-    fun switchOffDeletedFlag() {
-        todoDeleted.value = false
     }
 }

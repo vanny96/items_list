@@ -24,4 +24,5 @@
     <string name="high_priority">High</string>
     <string name="filter_label">Filter TODO</string>
     <string name="update_filters">UPDATE FILTERS</string>
+    <string name="todo_undo_removed">UNDO</string>
 </resources>

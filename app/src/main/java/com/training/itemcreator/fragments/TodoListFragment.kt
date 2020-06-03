@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.training.itemcreator.R
 import com.training.itemcreator.ui.adapters.TodoListRecyclerAdapter
 import com.training.itemcreator.model.Todo
@@ -18,6 +20,7 @@ import com.training.itemcreator.util.TodoItemTouchHelper
 import com.training.itemcreator.util.TodoSort
 import com.training.itemcreator.ui.dialogs.AddItemDialogFragment
 import com.training.itemcreator.ui.dialogs.TodoFilterDialogFragment
+import com.training.itemcreator.ui.snackbars.DeleteTodoSnackbar
 import com.training.itemcreator.viewmodel.TodoListViewModel
 import com.training.itemcreator.viewmodel.factory.TodoViewModelFactory
 
@@ -78,9 +81,18 @@ class TodoListFragment : Fragment() {
         }
 
         val onItemSwipeLeft: (Todo) -> Unit = { todo ->
-            todo.id?.let {
-                todoListViewModel.deleteItem(it)
-            }
+            DeleteTodoSnackbar(
+                view,
+                {
+                    todo.id?.let { todoListViewModel.deleteItem(it) }
+                },
+                {
+                    todoListViewModel.todoList.value?.let {
+                        adapter.data = it
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+            ).show()
         }
 
         adapter = TodoListRecyclerAdapter(
@@ -88,6 +100,7 @@ class TodoListFragment : Fragment() {
             onItemClick,
             onItemSwipeLeft
         )
+
         recyclerView = view.findViewById<RecyclerView>(R.id.recycler).apply {
             adapter = this@TodoListFragment.adapter
             layoutManager = LinearLayoutManager(context)
@@ -113,17 +126,6 @@ class TodoListFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
                 todoListViewModel.switchOffAddedFlag()
-            }
-        })
-
-        todoListViewModel.todoDeleted.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                Toast.makeText(
-                    view.context,
-                    getText(R.string.todo_removed_toast),
-                    Toast.LENGTH_SHORT
-                ).show()
-                todoListViewModel.switchOffDeletedFlag()
             }
         })
     }
